@@ -16,19 +16,19 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUsersDto } from './dto/create-users.dto';
-import { FindUsersDto } from 'prisma/generated/users/dto/find-users.dto';
-import { PrismaNestedLimited } from './dto/prisma-nested.dto';
-import { UpdateUsersDto } from './dto/update-users.dto';
-import { Users } from 'prisma/generated/users/entities/users.entity';
-import { UsersControllerPrisma } from 'prisma/generated/users/users.prisma.controller';
-import { UsersServicePrisma } from 'prisma/generated/users/users.prisma.service';
-import { sanitize } from 'src/lib/sanitize';
-import { Request } from 'express';
-import { UserWithRoles } from 'src/auth/dto/UserWithRoles.dto';
-import { Role } from 'src/auth/enums/roles.enum';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Users as PrismaUsers } from 'prisma/prisma-client';
+import {CreateUsersDto} from './dto/create-users.dto';
+import {FindUsersDto} from 'prisma/generated/users/dto/find-users.dto';
+import {PrismaNestedLimited} from './dto/prisma-nested.dto';
+import {UpdateUsersDto} from './dto/update-users.dto';
+import {Users} from 'prisma/generated/users/entities/users.entity';
+import {UsersControllerPrisma} from 'prisma/generated/users/users.prisma.controller';
+import {UsersServicePrisma} from 'prisma/generated/users/users.prisma.service';
+import {sanitize} from 'src/lib/sanitize';
+import {Request} from 'express';
+import {UserWithRoles} from 'src/auth/dto/UserWithRoles.dto';
+import {Role} from 'src/auth/enums/roles.enum';
+import {Roles} from 'src/auth/decorators/roles.decorator';
+import {Users as PrismaUsers} from 'prisma/prisma-client';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -92,9 +92,9 @@ export class UsersController extends UsersControllerPrisma {
       req.user as UserWithRoles,
     );
 
-    (usersData as Partial<PrismaUsers>).updatedBy = (
-      req?.user as UserWithRoles
-    ).email;
+    (usersData as Partial<
+      PrismaUsers
+    >).updatedBy = (req?.user as UserWithRoles).email;
     return this.updateUsers(usersData);
   }
 
@@ -189,7 +189,8 @@ export class UsersController extends UsersControllerPrisma {
   @ApiOperation({
     summary: 'Find/Filter/List Users',
     externalDocs: {
-      url: 'https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting',
+      url:
+        'https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting',
       description:
         'This endpoint exposes the full power of prisma filtering and sorting',
     },
@@ -199,24 +200,31 @@ export class UsersController extends UsersControllerPrisma {
     return super.findUsers(filters);
   }
 
-  @ApiOperation({ summary: 'Get User By ID' })
-  @ApiResponse({ type: Users })
+  @ApiOperation({summary: 'Get User By ID'})
+  @ApiResponse({type: Users})
   @Get(':id')
   async getUsersById(@Param('id') id: string): Promise<Users | null> {
     return super.getUsersById(id);
   }
 
-  @ApiOperation({ summary: 'Delete User By ID' })
-  @ApiResponse({ type: Users })
+  @ApiOperation({summary: 'Delete User By ID'})
+  @ApiResponse({type: Users})
   @Delete(':id')
   async deleteUsersById(@Param('id') id: string): Promise<Users | null> {
     return super.deleteUsersById(id);
   }
 
-  @ApiOperation({ summary: 'Get User By Email' })
-  @ApiResponse({ type: Users })
+  @ApiOperation({summary: 'Get User By Email'})
+  @ApiResponse({type: Users})
   @Get('by-email/:email')
   async getUsersByemail(@Param('email') email: string): Promise<Users | null> {
     return super.getUsersByemail(email);
+  }
+
+  @ApiOperation({summary: 'Notify user'})
+  @ApiResponse({type: String})
+  @Get('notify-user/hello')
+  async notifyUser() {
+    return 'Hello';
   }
 }
